@@ -27,6 +27,10 @@ Rails.application.routes.draw do
           resource :profile, only: :show
         end
       end
+
+      namespace :projects, path: "" do
+        resources :projects
+      end
     end
   end
 end

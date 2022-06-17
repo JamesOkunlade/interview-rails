@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :project do
     name { "MyString" }
-    account { nil }
+    account
   end
 end

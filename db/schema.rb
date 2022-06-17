@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_31_072010) do
+ActiveRecord::Schema.define(version: 2022_06_17_214846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,6 +37,14 @@ ActiveRecord::Schema.define(version: 2020_08_31_072010) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_projects_on_account_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
     t.string "name"
@@ -45,4 +53,5 @@ ActiveRecord::Schema.define(version: 2020_08_31_072010) do
     t.index ["account_id"], name: "index_users_on_account_id"
   end
 
+  add_foreign_key "projects", "accounts"
 end

@@ -4,7 +4,7 @@ module Api::V1::Projects::Contract
     property :account_id
 
     validation do
-      required(:name).filled
+      required(:name).filled(min_size?: 3)
       required(:account_id).filled
     end
   end

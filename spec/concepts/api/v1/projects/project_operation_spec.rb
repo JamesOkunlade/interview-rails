@@ -1,9 +1,10 @@
 RSpec.describe Api::V1::Projects::Operation::Create do
   subject(:result) { described_class.call(params: params) }
 
-  let(:name) { 'project_1' }
+  let(:name) { 'First project' }
   let(:account_id) { create(:account).id }
   let(:params) { { name: name, account_id: account_id } }
+  let(:invalid_params) { { account_id: account_id } }
 
   describe 'Success' do
     it 'creates a project' do
@@ -13,9 +14,22 @@ RSpec.describe Api::V1::Projects::Operation::Create do
   end
 
   describe 'Fail' do
-    it 'fails without name' do
-      result = described_class.call(params: params.except(:name))
+    it 'fails without the name param' do
+      result = described_class.call(params: invalid_params)
       expect(result.success?).to eq(false)
+    end
+  end
+end
+
+RSpec.describe Api::V1::Projects::Operation::Index do
+  subject(:result) { described_class.call }
+
+  let!(:projects) { create_list(:project, 10) }
+
+  describe 'Success' do
+    it 'returns list of projects' do
+      expect(result[:model].size).to eql(10)
+      expect(result).to be_success
     end
   end
 end
